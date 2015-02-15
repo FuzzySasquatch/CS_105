@@ -4,7 +4,7 @@ using namespace std;
 void LinkedList::push(int value) {
 	// If at least one node has been placed
 	if (head && tail) {
-		cout << "At least one node." << endl;
+		// cout << "At least one node." << endl;
 
 		Node* newNode = new Node(value);
 		/* For the second node, the value of tail is changed to the newest node.
@@ -14,7 +14,7 @@ void LinkedList::push(int value) {
 		tail = newNode;
 	}
 	else {
-		cout << "Adding first node." << endl;
+		// cout << "Adding first node." << endl;
 		/* Creates the first node and sets head and tail equal to it */
 		Node* firstNode = new Node(value);
 		tail = firstNode;
@@ -23,14 +23,30 @@ void LinkedList::push(int value) {
 }
 
 int LinkedList::pop() {
-
-	return 1;
+	int value = head->value; // pop value
+	Node* pop = head;
+	head = head->next;
+	delete pop;
+	return value;
 }
 
 void LinkedList::print() {
-	std::cout << "Value at node = " << head->next->value << std::endl;
+	Node* current = head;
+	while (current->next) {
+		cout << current->value << " ";
+		current = current->next;
+	}
+	/* Account for off by one 'space' */
+	cout << current->value << endl;
+	return;
 }
 
 int LinkedList::size() {
-	return 1;
+	int count = 0;
+	Node* current = head;
+	while (current->next) {
+		current = current->next;
+		count++;
+	}
+	return count;
 }

@@ -8,19 +8,53 @@ Eid: <your id>
 
 using namespace std;
 
+void useLinkedList() {
+    LinkedList list;
+    int value;
+    char input;
+
+    while (cin.get(input)) {
+        // cout << input << " ";
+        switch(input) {
+            case '+':
+                // cout << "push ";
+                cin >> value;
+                // cout << value << " ";
+                list.push(value);
+                break;
+            case '-':
+                // cout << "pop ";
+                list.pop();
+                break;
+            case 'p':
+                // cout << "print ";
+                list.print();
+                break;
+            default:
+                break;
+        }
+    }
+
+
+
+
+}
+
+void usePriorityQueue() {
+    // PriorityQueue queue;
+}
+
 int main (int argc, char const **argv)
 {
     /* your program */
-    LinkedList list;
-    int value;
-
-
-    while (!cin.eof()) {
-    	cin >> value;
-    	list.push(value);
-		
+    char c;
+    cin >> c;
+    
+    if (c == 'l') {
+        useLinkedList();
+    } else {
+        usePriorityQueue();
     }
-    list.print();
 	
     return 0;
 }

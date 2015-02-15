@@ -15,13 +15,19 @@ struct Node {
 class LinkedList {
 public:
 	LinkedList() : head(0), tail(0) {}
+	~LinkedList() {
+		// std::cout << "Deconstructor" << std::endl;
+		while (head->next) {
+			Node* garbage = head;
+			head = head->next;
+			delete garbage;
+		}
+		delete head;
+	}
 	virtual void push(int);
 	virtual int pop();
 	virtual void print();
 	virtual int size();
-	~LinkedList() {
-
-	}
 private:
 	Node* head;
 	Node* tail;
