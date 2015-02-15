@@ -16,18 +16,18 @@ class LinkedList {
 public:
 	LinkedList() : head(0), tail(0) {}
 	~LinkedList() {
-		// std::cout << "Deconstructor" << std::endl;
-		while (head->next) {
+		while (head && head->next) {
 			Node* garbage = head;
 			head = head->next;
 			delete garbage;
 		}
-		delete head;
+		if (head) delete head;
 	}
 	virtual void push(int);
 	int pop();
 	void print();
 	int size();
+/* Dervived classes have access to protected variables */
 protected:
 	Node* head;
 	Node* tail;
