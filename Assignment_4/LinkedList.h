@@ -24,11 +24,11 @@ public:
 		}
 		delete head;
 	}
-	void push(int);
+	virtual void push(int);
 	int pop();
 	void print();
 	int size();
-private:
+protected:
 	Node* head;
 	Node* tail;
 };

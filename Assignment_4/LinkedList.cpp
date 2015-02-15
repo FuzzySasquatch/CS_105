@@ -32,6 +32,8 @@ int LinkedList::pop() {
 
 void LinkedList::print() {
 	Node* current = head;
+	// cout << "Current = head" << endl;
+
 	while (current->next) {
 		cout << current->value << " ";
 		current = current->next;
