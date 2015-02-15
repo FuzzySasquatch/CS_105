@@ -5,33 +5,16 @@
 /* your includes */
 
 /* your class */
-class PriorityQueue : LinkedList {
+class PriorityQueue : public LinkedList {
 public:
 	void push(int);
 	int pop();
 	int peek();
 	void print();
 	int size();
+// private:
+// 	Node* head;
+// 	Node* tail;
 };
-
-// void PriorityQueue::push(int) {
-
-// }
-
-// int PriorityQueue::pop() {
-
-// }
-
-void PriorityQueue::peek() {
-
-}
-
-// void PriorityQueue::print() {
-
-// }
-
-// int PriorityQueue::size() {
-
-// }
 
 #endif

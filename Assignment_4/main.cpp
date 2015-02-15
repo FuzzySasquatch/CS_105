@@ -1,15 +1,15 @@
 /** 
-Name: <your name>
-Eid: <your id>
+Name: Phoenix Bishea
+Eid: pnb338
 */
 
-#include "LinkedList.h"
-// #include "PriorityQueue.h" /// make sure we include our PriorityQueue
+// #include "LinkedList.h"
+#include "PriorityQueue.h" /// make sure we include our PriorityQueue
 
 using namespace std;
 
 void useLinkedList() {
-    LinkedList list;
+    PriorityQueue list;
     int value;
     char input;
 
@@ -34,10 +34,6 @@ void useLinkedList() {
                 break;
         }
     }
-
-
-
-
 }
 
 void usePriorityQueue() {
@@ -55,6 +51,6 @@ int main (int argc, char const **argv)
     } else {
         usePriorityQueue();
     }
-	
+
     return 0;
 }

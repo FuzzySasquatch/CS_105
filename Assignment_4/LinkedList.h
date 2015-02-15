@@ -24,10 +24,10 @@ public:
 		}
 		delete head;
 	}
-	virtual void push(int);
-	virtual int pop();
-	virtual void print();
-	virtual int size();
+	void push(int);
+	int pop();
+	void print();
+	int size();
 private:
 	Node* head;
 	Node* tail;
