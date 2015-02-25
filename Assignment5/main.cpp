@@ -13,10 +13,11 @@ void useLinkedList() {
     double value;
     char input;
 
+    bool eof = false;
     // double a = 1.1;
     // cout << a;
 
-    while (cin.get(input)) {
+    while (cin.get(input) && !eof) {
         switch(input) {
             case '+':
                 cin >> value;
@@ -30,11 +31,38 @@ void useLinkedList() {
                 list.print();
                 break;
             case 'q':
-                return;
+                eof = true;
             default:
                 break;
         }
     }
+
+    eof = false;
+    LinkedList<double> list2;
+
+    while (cin.get(input) && !eof) {
+        switch(input) {
+            case '+':
+                cin >> value;
+                // cout << value << std::fixed;
+                list2.push(value);
+                break;
+            case '-':
+                list2.pop();
+                break;
+            case 'p':
+                list2.print();
+                break;
+            case 'q':
+                eof = true;
+            default:
+                break;
+        }
+    }
+
+    list2 = 1.0 + list + 25.6;
+    list2.print();
+    // cout << result << endl;
 }
 
 void usePriorityQueue() {

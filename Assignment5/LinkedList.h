@@ -19,12 +19,68 @@ class LinkedList {
 public:
 	LinkedList() : head(0), tail(0) {}
 	~LinkedList() {
+		clean();
+	}
+
+	LinkedList<T>& operator =(const LinkedList<T>& list) {
+		if (this == &list)
+        	return *this;
+        /* Cleans the original list for the next step */
+    	clean();
+    	/* Starts at the other list's head and moves through it, methodically 
+    	   pushing list's values onto this */
+    	for (Node<T>* current = list.head; current; current = current->next)
+        	push(current->value);
+        cout << "used operator" << endl;
+    	return *this;
+	}
+
+	bool operator ==(const LinkedList<T>& list) const {
+		/* Temporary nodes to iterate through each list */
+		Node<T>* one = head;
+		Node<T>* two = list.head;
+
+		/* Moves through the lists while at least one list is not null */
+		while (one || two) {
+			/* False if only one list is null or the list's values do not equal one another */
+			if ((!one || !two) || !(one->value == two->value)) {
+				return false;
+			}
+			/* Progress movement */
+			one = one->next;
+			two = two->next;
+		}
+		/* True if both lists are null */
+		return true;
+	}
+
+	/* Returns opposite of == operator */
+	bool operator !=(const LinkedList<T>& list) const {
+		return !(*this == list);
+	}
+
+	LinkedList<T> operator +(const T v) const {
+		LinkedList<T> newList;// = *this;
+		for (Node<T>* current = head; current; current = current->next)
+        	newList.push(current->value);
+		// cout << newList.head << endl;
+		newList.push(v);
+		// newList.print();
+		return newList;
+	}
+
+
+	void clean() {
 		while (head && head->next) {
 			Node<T>* garbage = head;
 			head = head->next;
 			delete garbage;
 		}
-		if (head) delete head;
+		if (head) {
+			// cout << *this << " break point" << endl;
+			delete head;
+			head = 0;
+		}
 	}
 
 	virtual void push(T value) {
