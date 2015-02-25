@@ -3,6 +3,8 @@
 
 /* your includes */
 #include <iostream>
+#include <sstream>
+#include <string>
 using namespace std;
 
 /* your class */
@@ -10,6 +12,21 @@ template <class T>
 struct Node {
 	T value;
 	Node<T>* next;
+
+	bool operator < (const Node<T>& node) const{
+		cout << "this " << this->value << endl;
+		cout << "other " << node.value << endl;
+	    return this->value < node.value;
+	}  
+	bool operator <= (const Node<T>& node) const{
+	    return this->value <= node.value;    
+	}
+	bool operator > (const Node<T>& node) const{
+	    return this->value > node.value;
+	}
+	bool operator >= (const Node<T>& node) const{
+	    return this->value >= node.value;
+	}
 
 	Node(T v) : value(v), next(0) {}
 };
@@ -31,7 +48,7 @@ public:
     	   pushing list's values onto this */
     	for (Node<T>* current = list.head; current; current = current->next)
         	push(current->value);
-        cout << "used operator" << endl;
+        // cout << "used operator" << endl;
     	return *this;
 	}
 
@@ -69,15 +86,105 @@ public:
 		return newList;
 	}
 
+	LinkedList<T> operator +(const LinkedList<T>& list) const {
+	    LinkedList<T> newList;// = *this;
+	    if (head) {
+			for (Node<T>* current = head; current; current = current->next)
+	        	newList.push(current->value);
+   		}
+
+	    for (Node<T>* current = list.head; current; current = current->next)
+        	newList.push(current->value);
+	    return newList;
+	}
+	// Returns a new list object that is the equivalent of removing v from the List 
+	// object (if it exists). This should remove all matching occurrences within the list.
+	LinkedList operator - (const int v) const {
+		if (!head) /// removing from an empty list is an error
+        	throw "Exception: subtraction from empty list";
+		LinkedList<T> newList;// = *this;
+		for (Node<T>* current = head; current; current = current->next) {
+        	if (current->value != v)
+        		newList.push(current->value);
+		}
+		// cout << newList.head << endl;
+		// newList.print();
+		return newList;
+	}
+
+	LinkedList operator -(const LinkedList& list) const {
+
+		if (!head)
+        	throw "Exception: subtraction from empty list";
+        /* Create a new list object and copy old values to it */
+		LinkedList<T> newList;// = *this;
+		for (Node<T>* current = head; current; current = current->next)
+	        		newList.push(current->value);
+	    /* Subtract elements from list from newList */
+		T v;
+		for (Node<T>* subList = list.head; subList; subList = subList->next) {
+        	v = subList->value;
+        	newList = newList - v;
+		}
+		return newList;
+	}
+
+	T& operator [](const int x) const {
+		Node<T>* current = head;
+		int count = 0;
+		while (current && (count < x)) {
+			if (!current->next) 
+				throw "Exception: out of bounds";
+			current = current->next;
+			// cout << count << endl;
+			count++;
+		}
+		return current->value;
+	}
+
+	friend ostream& operator << (ostream& out, const LinkedList<T>& list) {
+			// Node<T>* current = list.head;
+   // 		while (current){
+   //      	cout << current->value << " ";
+   //      	current = current->next;
+   //  	}
+   //  	return out;
+    	/* Iterates through each node printing the node's value */
+		if (list.head) {
+			Node<T>* current = list.head;
+			while (current->next) {
+				cout << current->value << " ";
+				current = current->next;
+			}
+			/* Account for off by one 'space' */
+			cout << current->value;
+		} else {
+			throw "Exception: empty list";
+		}
+		return out;
+	}
+//Output the list. This cannot be a member function, it is a friend instead.
+
+	// istream& operator >> (istream& in, LinkedList& list) {
+	//     int v;
+	//     std::string line;
+	//     getline(in, line); 
+	//     std::istringstream lis(line); /// get an input stream over our line
+	    
+	//     while (lis >> v){
+	//         list.push(v);
+	//     }
+	//     return in;
+	// }
 
 	void clean() {
 		while (head && head->next) {
 			Node<T>* garbage = head;
 			head = head->next;
+			// cout << head << endl;
 			delete garbage;
 		}
 		if (head) {
-			// cout << *this << " break point" << endl;
 			delete head;
 			head = 0;
 		}
@@ -117,18 +224,7 @@ public:
 	}
 
 	void print() {
-		/* Iterates through each node printing the node's value */
-		if (head) {
-			Node<T>* current = head;
-			while (current->next) {
-				cout << current->value << " ";
-				current = current->next;
-			}
-			/* Account for off by one 'space' */
-			cout << current->value << endl;
-		} else {
-			cout << "There is currently no data in the list." << endl;
-		}
+		cout << *this << endl;
 	}
 
 	T size() {

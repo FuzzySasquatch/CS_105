@@ -9,12 +9,12 @@ Eid: pnb338
 using namespace std;
 
 void useLinkedList() {
-    LinkedList<double> list;
-    double value;
+    LinkedList<int> list;
+    int value;
     char input;
 
     bool eof = false;
-    // double a = 1.1;
+    // int a = 1.1;
     // cout << a;
 
     while (cin.get(input) && !eof) {
@@ -36,38 +36,59 @@ void useLinkedList() {
                 break;
         }
     }
+    Node<int>* a = ;
+    Node<int>* b = ;
 
-    eof = false;
-    LinkedList<double> list2;
+    // cout << a->value <<endl;
+    // cout << b->value << endl;
+    // cout << list << endl;
+    bool one = a < b;
+    bool two = a > b;
+    bool three = a > b;
+    bool four = a > b;
 
-    while (cin.get(input) && !eof) {
-        switch(input) {
-            case '+':
-                cin >> value;
-                // cout << value << std::fixed;
-                list2.push(value);
-                break;
-            case '-':
-                list2.pop();
-                break;
-            case 'p':
-                list2.print();
-                break;
-            case 'q':
-                eof = true;
-            default:
-                break;
-        }
-    }
+    cout << one << endl;;
+    cout << two << endl;
+    cout << three << endl;
+    cout << four << endl;
+    // cin >>
+    // eof = false;
+    // LinkedList<int> list2;
 
-    list2 = 1.0 + list + 25.6;
-    list2.print();
+    // while (cin.get(input) && !eof) {
+    //     switch(input) {
+    //         case '+':
+    //             cin >> value;
+    //             // cout << value << std::fixed;
+    //             list2.push(value);
+    //             break;
+    //         case '-':
+    //             list2.pop();
+    //             break;
+    //         case 'p':
+    //             list2.print();
+    //             break;
+    //         case 'q':
+    //             eof = true;
+    //         default:
+    //             break;
+    //     }
+    // }
+
+  
+    // list2 = list2 - list;
+
+    // LinkedList<int> list3;
+    // list3.push(3.0);
+    // list3 = list3 + 3.1 + 5.5 + 7.3;
+    // LinkedList<int> list4 = list + list2 + list3;
+    // list2.print();
     // cout << result << endl;
 }
 
 void usePriorityQueue() {
-    PriorityQueue<double> list;
-    double value;
+    PriorityQueue<int> list;
+    int value;
     char input;
 
     // bool f;
