@@ -1,0 +1,13 @@
+6 
+romeo 2 
+juliet 1 
+ophelia 2 
+hamlet 1
+rosencrantz 1 
+guildenstern 2
+romeo juliet rosencrantz hamlet 
+juliet romeo guildenstern
+ophelia hamlet rosencrantz
+hamlet ophelia romeo
+rosencrantz ophelia
+guildenstern juliet hamlet

@@ -1,0 +1,17 @@
+8
+a 1
+b 1
+c 1
+d 1
+r 2
+s 2
+t 2
+u 2
+a u t r s
+b u r s t
+c s r t u
+d t r s u
+r a c d b
+s d a c b
+t a c d b
+u b c d a
