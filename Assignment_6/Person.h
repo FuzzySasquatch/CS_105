@@ -11,10 +11,11 @@ class Rating;
 class Person {
 public: 
      Person(const string& name): name(name) {}
-     Person(): name("free") {}
+     Person(): name("free") {}	// used for the case when a value is free
      string name; 
      list<Rating> preferences;
 
+     /* Overloaded so that key/value pairs when work in map */
      bool operator <(const Person&) const; 
 };
 

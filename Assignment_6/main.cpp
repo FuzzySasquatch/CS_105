@@ -12,18 +12,6 @@ using std::cin;
 using std::endl;
 using std::list;
 
-// void sortRatings(list<Person>& capulets, list<Person>&montagues) {
-
-//     // for(int i = 1; i <= 2; i++) {
-//     //     list<Person>& group = (i == 1) ? capulets : montagues;
-//     //     for (list<Person>::iterator iter = group.begin(); iter != group.end(); ++iter) {
-//     //         Person& p = *iter;
-//     //         p.preferences.sort();
-//     //     }
-//     // }
-//     capulets.front().preferences.sort();
-// }
-
 int main (int argc, char const *argv[])
 {
     list<Person> capulets; /// capulets
@@ -44,14 +32,18 @@ int main (int argc, char const *argv[])
             cout << endl;
         }        
     }
-    // Rating r = montagues.front().preferences.front().rating;
-    // Rating r2 = capulets.front().preferences.front().rating; 
-    // bool test = r >= r2;
-    // cout << test << endl;
+
+    cout << endl;
 
     Matcher m;
+    map<Person,Person> result = m.stableMatch(capulets, montagues);
 
-    m.stableMatch(capulets, montagues);
+    /* Print the results */
+    for (map<Person,Person>::iterator iter = result.begin(); iter != result.end(); ++iter) {
+        string personA = iter->first.name;
+        string personB = iter->second.name;
+        cout << personA << " " << personB << endl;
+    }
 
     return 0;
 }

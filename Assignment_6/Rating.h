@@ -7,7 +7,6 @@ class Person;
 class Rating {
 public:
     Rating(Person* p, int rating) : person(p), rating(rating) {}
-    Rating(int rating) : rating(rating) {}
     Person* person;
     int rating; 
 
