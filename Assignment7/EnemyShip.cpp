@@ -8,34 +8,33 @@ using std::endl;
 int EnemyShip::movements = 0;
 int EnemyShip::moveDown = 0;
 int EnemyShip::direction = -2;
-// double EnemyShip::uFireRate = 0.75;
-// double EnemyShip::WFireRate = 1.5;
+int EnemyShip::uFireRate = 50;
+int EnemyShip::WFireRate = 100;
+int EnemyShip::enemiesLeft = 0;
 
-EnemyShip::EnemyShip(int y, int x, int ch) : Ship(y, x, ch) {
-	// cout << "EnemyShip" << endl;
-}
+EnemyShip::EnemyShip(int y, int x, int ch) : GameObject(y, x, ch) {}
 
-void EnemyShip::timeStep(int* ticks, EnemyShip* enemies[], int NUM_ENEMIES) {//, EnemyProjectile* projectiles[], int* index) {
-	/// Generate a random double
+void EnemyShip::timeStep(int* ticks, EnemyShip* enemies[], int NUM_ENEMIES, EnemyProjectile* projectiles[], int* index) {
+	/// Seeds random number generator
 	srand (time(NULL));
-	for (int i = 0; i < NUM_ENEMIES; ++i) {
-			double random = (double)rand() / RAND_MAX;
-			random = random * (100 - 0);
-			// if (enemies[i]) {
-			// 	EnemyShip* enemy = enemies[i];
+	int random = rand() % 1000;
 
-			// 	char shape = enemy->getShape();
-			// 	bool uFiring = shape == 'u' && random <= uFireRate;
-			// 	bool WFiring = shape == 'W' && random <= WFireRate;
-
-			// 	if (uFiring || WFiring) 
-			// 	{
-			// 		// projectiles[*index] = new EnemyProjectile(enemy->getY(), enemy->getX(), '|');
-			// 		// *index++;
-			// 		mvprintw(15, 1, "u or W firing");
-			// 	} 
-			// }
+	if (*ticks >= 20) {
+		for (int i = 0; i < NUM_ENEMIES; ++i) {
+			if (enemies[i]) {
+				random = rand() % 1000;
+				char shape = enemies[i]->getShape();
+				if (shape == 'u' && random <= uFireRate) {
+					projectiles[*index] = new EnemyProjectile(enemies[i]->getY()+1, enemies[i]->getX(), '|');
+					*index += 1;
+				} else if (shape == 'W' && random <= WFireRate) {
+					projectiles[*index] = new EnemyProjectile(enemies[i]->getY()+1, enemies[i]->getX(), '|');
+					*index += 1;
+				}
+			}
+		}
 	}
+	mvprintw(15, 1, "index is %i", *index);
 
 	/// Count 20 ticks and move enemies horizontally
 	if (*ticks >= 20) {
@@ -62,5 +61,4 @@ void EnemyShip::timeStep(int* ticks, EnemyShip* enemies[], int NUM_ENEMIES) {//,
 		}
 		moveDown = 0;
 	}
-	// cout << "timeStep" << endl;
 }

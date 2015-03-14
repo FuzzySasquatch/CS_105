@@ -1,22 +1,22 @@
 #ifndef ENEMY_SHIP_0000433191238374
 #define ENEMY_SHIP_0000433191238374
 
-#include "Ship.h"
-// #include "EnemyProjectile.h"
+#include "GameObject.h"
+#include "EnemyProjectile.h"
 
 
-class EnemyShip : public Ship {
+class EnemyShip : public GameObject {
 private:
 	static int movements;
 	static int direction;
 	static int moveDown;
-	static double uFireRate;
-	static double WFireRate;
+	static int uFireRate;
+	static int WFireRate;
+	static int enemiesLeft;
 public:
 	
 	EnemyShip(int,int,int);
-	static void timeStep(int*, EnemyShip*[], int);//, EnemyProjectile*[], int*); // logic when the time increments
-	void fireProjectile() const {}
+	static void timeStep(int*, EnemyShip*[], int, EnemyProjectile*[], int*); // logic when the time increments
 	
 	// virtual void timeStep() = 0; // logic when the time increments
 	// virtual char getShape() const = 0; // what is the shape of this object

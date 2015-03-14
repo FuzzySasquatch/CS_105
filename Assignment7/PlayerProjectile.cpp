@@ -4,7 +4,7 @@
 using std::cout;
 using std::endl;
 
-PlayerProjectile::PlayerProjectile(int y, int x, int ch) : Projectile(y, x, ch) {}
+PlayerProjectile::PlayerProjectile(int y, int x, int ch) : GameObject(y, x, ch) {}
 
 void PlayerProjectile::timeStep(PlayerProjectile* projectiles[], int NUM_PROJECTILES) {
 	for (int i = 0; i < NUM_PROJECTILES; ++i) {

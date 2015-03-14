@@ -11,19 +11,19 @@ Eid: pnb338
 
 #include "timehelper.cpp"
 #include "GameObject.h"
-#include "Ship.h"
+// #include "Ship.h"
 #include "PlayerShip.h"
 #include "EnemyShip.h"
-#include "Projectile.h"
+// #include "Projectile.h"
 #include "PlayerProjectile.h"
-// #include "EnemyProjectile.h"
+#include "EnemyProjectile.h"
 
 using std::cout;
 using std::endl;
 
 #define NUM_ENEMIES 22
 #define PLAYER_PROJECTILE_LIMIT 5
-// #define ENEMY_PROJECTILE_LIMIT 50
+#define ENEMY_PROJECTILE_LIMIT 25
 #define X_MAX 36
 #define X_MIN 0
 
@@ -49,7 +49,7 @@ int main (int argc, char const *argv[])
     PlayerProjectile* pProjectiles[PLAYER_PROJECTILE_LIMIT] = {0};
 
     EnemyShip* enemies[NUM_ENEMIES] = {0};
-    // EnemyProjectile* enemyProjectiles[ENEMY_PROJECTILE_LIMIT];
+    EnemyProjectile* enemyProjectiles[ENEMY_PROJECTILE_LIMIT] = {0};
 
     int enemyY = 2;
     int enemyX = 12;
@@ -133,8 +133,10 @@ int main (int argc, char const *argv[])
     int enemyProjectileIndex = 0;
     
 
-    
+    bool uFiring = false;
+    bool WFiring = false;    
 
+    // int random = rand() % 100;
 
     while (!quit){
         /// this is how to print a string to the screen, 0, 0 is the  y, x location
@@ -153,23 +155,52 @@ int main (int argc, char const *argv[])
                 nsleep(delay-elapsedTime);
             } 
         }
-        
+        // random = rand() % 10;
 
+        EnemyProjectile::timeStep(enemyProjectiles, ENEMY_PROJECTILE_LIMIT, ticks);
+        ticks += 1;
 
-        ticks += getElapsedTime() / delay;
-        mvprintw(20, 0, "Ticks = %i", ticks);
+        if (enemyProjectileIndex > ENEMY_PROJECTILE_LIMIT) {
+            enemyProjectileIndex = 0;
+        }
         
-        
+        // for (int i = 0; i < NUM_ENEMIES; ++i) {
+        //     uFiring = false;
+        //     WFiring = false;
+        //     // double random = (double)rand() / RAND_MAX;
+            
+        //     // random = random * (100 - 0);
+        //     mvprintw(13, 1, "random is %i", random);
+        //     if (enemies[i]) {
+        //         EnemyShip* enemy = enemies[i];
 
-        /// Print enemy projectiles
-        // EnemyProjectile::timeStep(enemyProjectiles, ENEMY_PROJECTILE_LIMIT);
-        // for (int i = 0; i < ENEMY_PROJECTILE_LIMIT; ++i) {
-        //     if (enemyProjectiles[i]) {
-        //         eProjectileY = enemyProjectiles[i]->getY();
-        //         eProjectileX = enemyProjectiles[i]->getX();
-        //         mvprintw(eProjectileY, eProjectileX, "|");
+        //         char shape = enemy->getShape();
+
+        //         // uFiring = (shape == 'u' && random <= 1);
+        //         WFiring = (shape == 'W' && random <= 2);
+
+        //         mvprintw(15, 1, "index is %i", enemyProjectileIndex);
+        //         if (uFiring) 
+        //         {
+        //             // enemyProjectiles[enemyProjectileIndex] = new EnemyProjectile(enemy->getY(), enemy->getX(), '|');
+        //             enemyProjectileIndex+= 1;
+        //         } 
+
         //     }
         // }
+
+        /// Print enemy projectiles
+        
+        for (int i = 0; i < ENEMY_PROJECTILE_LIMIT; ++i) {
+            if (enemyProjectiles[i]) {
+                eProjectileY = enemyProjectiles[i]->getY();
+                eProjectileX = enemyProjectiles[i]->getX();
+                mvprintw(eProjectileY, eProjectileX, "|");
+            }
+        }
+
+        // ticks += getElapsedTime() / delay;
+        mvprintw(20, 0, "Ticks = %i", ticks);
 
         /// some example code to show how to work with the keyboard
         switch(ch){
@@ -205,7 +236,7 @@ int main (int argc, char const *argv[])
         }
 
         /// Print enemies and create enemy projectiles
-        EnemyShip::timeStep(&ticks, enemies, NUM_ENEMIES);//, enemyProjectiles, &enemyProjectileIndex);
+        EnemyShip::timeStep(&ticks, enemies, NUM_ENEMIES, enemyProjectiles, &enemyProjectileIndex);
         for (int i = 0; i < NUM_ENEMIES; ++i) {
             if (enemies[i]) {
                 enemy = enemies[i]->getShape();
@@ -214,6 +245,8 @@ int main (int argc, char const *argv[])
                 mvaddch(enemyY, enemyX, enemy);
             }
         }    
+
+
 
         mvaddch(y,x,'^'); /// Print the player ship
         mvchgat(y,x, 1, '^', 2, NULL); /// color the player green
