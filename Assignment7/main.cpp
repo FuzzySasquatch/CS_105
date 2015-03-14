@@ -42,18 +42,22 @@ using std::endl;
 int main (int argc, char const *argv[])
 {   
 
-
+    // GameObject::myEnqueue = &enqueue;
+    // GameObject::myDequeue = &dequeue;
     
-
-    PlayerShip* player = new PlayerShip(21, 16, '^');
+    /// Hold players and player projectiles
+    PlayerShip* player = new PlayerShip(21, 20, '^');
     PlayerProjectile* pProjectiles[PLAYER_PROJECTILE_LIMIT] = {0};
 
+    /// Hold enemies and enemy projectiles
     EnemyShip* enemies[NUM_ENEMIES] = {0};
     EnemyProjectile* enemyProjectiles[ENEMY_PROJECTILE_LIMIT] = {0};
 
+    /// Enemy starting y, x values
     int enemyY = 2;
-    int enemyX = 12;
+    int enemyX = 16;
 
+    /// Create enemies
     for (int count = 0; count < NUM_ENEMIES; ++count) {
         bool u = count % 2;
         bool newLine = count == 10;
@@ -64,18 +68,11 @@ int main (int argc, char const *argv[])
         }
         if (newLine) {
             enemyY += 2;
-            enemyX = 12;
+            enemyX = 16;
         } else {
             enemyX += 2;
         }
     }
-
-
-
-
-
-    // cout << player->getX() << endl;
-    // delete player;
 
     srand (time(NULL)); /// seed to some random number based on time
     if ( initscr() == NULL ) { /// init the screen, defaults to stdscr
@@ -101,48 +98,34 @@ int main (int argc, char const *argv[])
     const int delay = 50; /// milliseconds = one tick
     timeout(delay); /// set how long between keypresses (more or less)
 
-
-    /// Assign function pointers
-    // GameObject obj;
-    // GameObject::myEnqueue = &enqueue;
-    // GameObject::myDequeue = &dequeue;
-
-    /// Create the player
-    
-    // PlayerShip::addObject(&player);
-
     /// some variables to give you some hints
     int ch = 0;
     bool quit = false;
     int score = 0;
 
-    int x = 16;
+    int elapsedTime = getElapsedTime();
+    int ticks = 0;
+
+    /// Player positional values
+    int x = 20;
     int y = 21;
 
-    int elapsedTime = getElapsedTime();
-    int ticks = getElapsedTime();
-
-    char enemy;
-
+    /// Player projectile values and index
     int pProjectileY = 0;
     int pProjectileX= 0;
     int pProjectileIndex = 0;
 
+    /// Enemy projectile values and index
     int eProjectileY = 0;
     int eProjectileX = 0;
     int enemyProjectileIndex = 0;
-    
 
-    bool uFiring = false;
-    bool WFiring = false;    
-
-    // int random = rand() % 100;
+    /// Holds enemy shape
+    char enemy;
 
     while (!quit){
         /// this is how to print a string to the screen, 0, 0 is the  y, x location
         mvprintw(0, 0, "SCORE: %i   'q' to quit.\n", score);
-
-        
 
         /// Handle player input
         ch = getch();
@@ -155,42 +138,16 @@ int main (int argc, char const *argv[])
                 nsleep(delay-elapsedTime);
             } 
         }
-        // random = rand() % 10;
 
-        EnemyProjectile::timeStep(enemyProjectiles, ENEMY_PROJECTILE_LIMIT, ticks);
-        ticks += 1;
+        ticks += 1; /// Counts ticks
+        mvprintw(20, 0, "Ticks = %i", ticks);
 
         if (enemyProjectileIndex > ENEMY_PROJECTILE_LIMIT) {
             enemyProjectileIndex = 0;
         }
         
-        // for (int i = 0; i < NUM_ENEMIES; ++i) {
-        //     uFiring = false;
-        //     WFiring = false;
-        //     // double random = (double)rand() / RAND_MAX;
-            
-        //     // random = random * (100 - 0);
-        //     mvprintw(13, 1, "random is %i", random);
-        //     if (enemies[i]) {
-        //         EnemyShip* enemy = enemies[i];
-
-        //         char shape = enemy->getShape();
-
-        //         // uFiring = (shape == 'u' && random <= 1);
-        //         WFiring = (shape == 'W' && random <= 2);
-
-        //         mvprintw(15, 1, "index is %i", enemyProjectileIndex);
-        //         if (uFiring) 
-        //         {
-        //             // enemyProjectiles[enemyProjectileIndex] = new EnemyProjectile(enemy->getY(), enemy->getX(), '|');
-        //             enemyProjectileIndex+= 1;
-        //         } 
-
-        //     }
-        // }
-
         /// Print enemy projectiles
-        
+        EnemyProjectile::timeStep(enemyProjectiles, ENEMY_PROJECTILE_LIMIT, ticks);
         for (int i = 0; i < ENEMY_PROJECTILE_LIMIT; ++i) {
             if (enemyProjectiles[i]) {
                 eProjectileY = enemyProjectiles[i]->getY();
@@ -198,9 +155,6 @@ int main (int argc, char const *argv[])
                 mvprintw(eProjectileY, eProjectileX, "|");
             }
         }
-
-        // ticks += getElapsedTime() / delay;
-        mvprintw(20, 0, "Ticks = %i", ticks);
 
         /// some example code to show how to work with the keyboard
         switch(ch){
@@ -246,8 +200,6 @@ int main (int argc, char const *argv[])
             }
         }    
 
-
-
         mvaddch(y,x,'^'); /// Print the player ship
         mvchgat(y,x, 1, '^', 2, NULL); /// color the player green
 
@@ -262,6 +214,18 @@ int main (int argc, char const *argv[])
         if (enemies[i]) {
             delete enemies[i];
             enemies[i] = 0;
+        }
+    }
+    for (int i = 0; i < ENEMY_PROJECTILE_LIMIT; ++i) {
+        if (enemyProjectiles[i]) {
+            delete enemyProjectiles[i];
+            enemyProjectiles[i] = 0;
+        }
+    }
+    for (int i = 0; i < PLAYER_PROJECTILE_LIMIT; ++i) {
+        if (pProjectiles[i]) {
+            delete pProjectiles[i];
+            pProjectiles[i] = 0;
         }
     }
     delete player;
