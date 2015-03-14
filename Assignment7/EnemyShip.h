@@ -12,14 +12,17 @@ class EnemyProjectile;
 class EnemyShip : public GameObject {
 private:
 	static int movements;
+	static int totalMovements;
 	static int direction;
 	static int moveDown;
+	static int movementSpeed;
+
 	static int uFireRate;
 	static int WFireRate;
 public:
 	EnemyShip(int,int,int);
 	static void timeStep(int*, EnemyShip*[], int, EnemyProjectile*[], int*); // logic when the time increments
-	static bool isCollision(EnemyShip*[], PlayerShip*, int, PlayerProjectile*, int*);
+	static bool isCollision(EnemyShip*[], PlayerShip*, int, PlayerProjectile*, int*, bool*);
 };
 
 #endif

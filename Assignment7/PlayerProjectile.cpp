@@ -10,10 +10,12 @@ void PlayerProjectile::isCollision(PlayerProjectile* projectiles[], int NUM_PROJ
 	for (int i = 0; i < NUM_PROJECTILES; ++i) {
 		if (projectiles[i]) {
 			y = projectiles[i]->getY();
-			x = projectiles[i]->getX();
+			// x = projectiles[i]->getX();
 			if (y < 0) {
-				delete projectiles[i];
-				projectiles[i] = 0;
+				if (projectiles[i]) {
+					delete projectiles[i];
+					projectiles[i] = 0;
+				}
 			}
 		}
 	}

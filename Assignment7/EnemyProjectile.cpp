@@ -7,7 +7,7 @@ EnemyProjectile::EnemyProjectile(int y, int x, int ch) : GameObject(y, x, ch) {}
 
 bool EnemyProjectile::isCollision(EnemyProjectile* projectiles[], PlayerShip* player, int NUM_PROJECTILES) {
 	int y; 
-	volatile int x;
+	int x;
 	int playerY = player->getY();
 	volatile int playerX = player->getX();
 	for (int i = 0; i < NUM_PROJECTILES; ++i) {
@@ -15,8 +15,10 @@ bool EnemyProjectile::isCollision(EnemyProjectile* projectiles[], PlayerShip* pl
 			y = projectiles[i]->getY();
 			x = projectiles[i]->getX();
 			if (y == playerY && x == (playerX = player->getX())) {
+				mvaddch(y-1,x,'*');
 				return true;
 			} else if (y > playerY) {
+				mvaddch(y-1,x,'*');
 				delete projectiles[i];
 				projectiles[i] = 0;
 			}
