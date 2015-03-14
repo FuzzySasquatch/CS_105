@@ -3,8 +3,8 @@
 
 #include "GameObject.h"
 
-
-struct PlayerShip : public GameObject {
+class PlayerShip : public GameObject {
+public:
 	PlayerShip(int,int,int);	
 };
 

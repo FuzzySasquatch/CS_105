@@ -14,11 +14,13 @@ bool EnemyProjectile::isCollision(EnemyProjectile* projectiles[], PlayerShip* pl
 		if (projectiles[i]) {
 			y = projectiles[i]->getY();
 			x = projectiles[i]->getX();
+			/// Projectile hit player
 			if (y == playerY && x == (playerX = player->getX())) {
-				mvaddch(y-1,x,'*');
+				mvaddch(y-1,x,'*'); /// Prints explosion
 				return true;
+			/// Projectile off screen
 			} else if (y > playerY) {
-				mvaddch(y-1,x,'*');
+				mvaddch(y-1,x,'*'); // Prints explosion
 				delete projectiles[i];
 				projectiles[i] = 0;
 			}
@@ -27,6 +29,7 @@ bool EnemyProjectile::isCollision(EnemyProjectile* projectiles[], PlayerShip* pl
 	return false;
 }
 
+/// Move projectiles downwards
 void EnemyProjectile::timeStep(EnemyProjectile* projectiles[], int NUM_PROJECTILES, int ticks) {
 	for (int i = 0; i < NUM_PROJECTILES; ++i) {
 		if (projectiles[i]) {

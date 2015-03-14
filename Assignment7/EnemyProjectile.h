@@ -8,8 +8,8 @@
 class EnemyProjectile : public GameObject {
 public:
 	EnemyProjectile(int,int,int);
-	static void timeStep(EnemyProjectile*[], int, int);
-	static bool isCollision(EnemyProjectile*[], PlayerShip*, int);
+	static void timeStep(EnemyProjectile*[], int, int);	/// Check for hits or out of bounds
+	static bool isCollision(EnemyProjectile*[], PlayerShip*, int);	/// Move projectile
 };
 
 #endif

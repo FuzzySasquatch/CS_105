@@ -3,20 +3,17 @@
 
 class GameObject {
 protected:
+	GameObject(int,int,int);
 	int xPos;
 	int yPos;
 	int shape;
-
-	GameObject(int,int,int);
-
 	virtual void timeStep() {} // logic when the time increments
-
 public:
 	char getShape() const; // what is the shape of this object
-	virtual void setX(const int); 
-	int getX() const; // getter and setter for the x value
-	virtual void setY(const int); 
-	int getY() const; // getter and setter for the y value	
+	void setX(const int); // getter and setter for the x value
+	int getX() const;
+	void setY(const int); // getter and setter for the y value
+	int getY() const; 	
 };
 
 #endif

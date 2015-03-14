@@ -97,6 +97,7 @@ int main (int argc, char const *argv[])
 
     /// Hold enemies and enemy projectiles
     EnemyShip* enemies[NUM_ENEMIES] = {0};
+    EnemyProjectile* buffer[10] = {0};
     EnemyProjectile* enemyProjectiles[ENEMY_PROJECTILE_LIMIT] = {0};
 
     /// Enemy starting y, x values
@@ -141,6 +142,12 @@ int main (int argc, char const *argv[])
     while (!quit) {
         /// Print the score
         mvprintw(0, 22, "SCORE: %i   PRESS 'q' TO QUIT\n", score);
+        if (score < 10)
+            mvchgat(0, 40, 1, 'q', 1, NULL);
+        else {
+            mvchgat(0, 41, 1, 'q', 1, NULL);
+        }
+        mvchgat(0, 22, 5, 'S', 2, NULL);
         
         /// Gives player the ability to pause the game
         while (pause) {
@@ -150,7 +157,7 @@ int main (int argc, char const *argv[])
                 pause = false;
             }
             mvprintw(9, 22, "PAUSED ||  PRESS 'r' TO RESUME\n");
-            mvchgat(9, 40, 1, 'r', 1, NULL);
+            mvchgat(9, 40, 1, 'r', 2, NULL);
         }
 
         /// Fetch player input
@@ -170,19 +177,20 @@ int main (int argc, char const *argv[])
         for (int i = 0; i < PLAYER_PROJECTILE_LIMIT; ++i) {
             if (pProjectiles[i]) {
                 bool deleteP = false;
-                quit = EnemyShip::isCollision(enemies, player, NUM_ENEMIES, pProjectiles[i], &score, &deleteP);
+                quit = EnemyShip::isCollision(enemies, NUM_ENEMIES, pProjectiles[i], &score, &deleteP);
                 /// Player projectile has collided with enemy so delete it
                 if (deleteP && pProjectiles[i]) {
                     delete pProjectiles[i];
                     pProjectiles[i] = 0;
                 }
-            }
+            } 
         }
         /// Check for enemy projectile collisions with the player or the base 
         quit = EnemyProjectile::isCollision(enemyProjectiles, player, ENEMY_PROJECTILE_LIMIT);
         /// check for player projectile collisions with the ceiling
         PlayerProjectile::isCollision(pProjectiles, PLAYER_PROJECTILE_LIMIT);
-
+        if (!quit)
+            quit = EnemyShip::isCollision(enemies, player, NUM_ENEMIES);
         /// Update the player postion based on user input
         switch(ch){
                 case KEY_RIGHT: 
