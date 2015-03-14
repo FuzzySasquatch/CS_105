@@ -10,6 +10,7 @@ private:
 public:
 	PlayerShip(int,int,int);
 	void timeStep() {} // logic when the time increments
+	void fireProjectile() const;
 	// virtual void timeStep() = 0; // logic when the time increments
 	// virtual char getShape() const = 0; // what is the shape of this object
 	// virtual void setX(const int x); int getX() const; // getter and setter for the x value

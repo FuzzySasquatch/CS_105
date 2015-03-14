@@ -1,13 +1,13 @@
-#ifndef SHIP_0494993111
-#define SHIP_0494993111
+#ifndef PROJECTILE_581924911123415
+#define PROJECTILE_581924911123415
 
 #include "GameObject.h"
 
-class Ship : public GameObject {
+class Projectile : public GameObject {
 protected:
-	Ship(int,int,int);
+	Projectile(int,int,int);
 	virtual void timeStep();
-	virtual void fireProjectile() const = 0;
+	// virtual void fireLaser() const = 0;
 	// virtual void timeStep() = 0; // logic when the time increments
 	// virtual char getShape() const = 0; // what is the shape of this object
 	// virtual void setX(const int x); 

@@ -14,32 +14,42 @@ Eid: pnb338
 #include "Ship.h"
 #include "PlayerShip.h"
 #include "EnemyShip.h"
+#include "Projectile.h"
+#include "PlayerProjectile.h"
+// #include "EnemyProjectile.h"
 
 using std::cout;
 using std::endl;
 
 #define NUM_ENEMIES 22
+#define PLAYER_PROJECTILE_LIMIT 5
+// #define ENEMY_PROJECTILE_LIMIT 50
 #define X_MAX 36
 #define X_MIN 0
 
 
-static void enqueue(GameObject* obj) {
-    // obj = new GameObject();
-    cout << "  calling enqueue with obj address =" << obj << endl;
-    // delete obj;
-}
+// static void enqueue(GameObject* obj) {
+//     cout << "  calling enqueue" << endl;
+//     // return new GameObject(y, x, ch);
+//     // =" << obj << endl;
+//     // delete obj;
+// }
 
-static void dequeue(GameObject* obj) {
-    cout << "  calling dequeue with obj address =" << obj << endl; 
-}
+// static void dequeue(GameObject* obj) {
+//     cout << "  calling dequeue with obj address =" << obj << endl; 
+// }
 
 int main (int argc, char const *argv[])
 {   
 
 
-    PlayerShip* player = new PlayerShip(21, 16, '^');
+    
 
-    EnemyShip* enemies[NUM_ENEMIES];
+    PlayerShip* player = new PlayerShip(21, 16, '^');
+    PlayerProjectile* pProjectiles[PLAYER_PROJECTILE_LIMIT] = {0};
+
+    EnemyShip* enemies[NUM_ENEMIES] = {0};
+    // EnemyProjectile* enemyProjectiles[ENEMY_PROJECTILE_LIMIT];
 
     int enemyY = 2;
     int enemyX = 12;
@@ -60,8 +70,12 @@ int main (int argc, char const *argv[])
         }
     }
 
-    cout << player->getX() << endl;
-    delete player;
+
+
+
+
+    // cout << player->getX() << endl;
+    // delete player;
 
     srand (time(NULL)); /// seed to some random number based on time
     if ( initscr() == NULL ) { /// init the screen, defaults to stdscr
@@ -110,30 +124,53 @@ int main (int argc, char const *argv[])
 
     char enemy;
 
+    int pProjectileY = 0;
+    int pProjectileX= 0;
+    int pProjectileIndex = 0;
+
+    int eProjectileY = 0;
+    int eProjectileX = 0;
+    int enemyProjectileIndex = 0;
     
 
-    // for (int count = 12; count < 32; ++count) {
+    
 
-    //     EnemyShip::addObject();
-    // }
 
     while (!quit){
-        
         /// this is how to print a string to the screen, 0, 0 is the  y, x location
         mvprintw(0, 0, "SCORE: %i   'q' to quit.\n", score);
+
+        
 
         /// Handle player input
         ch = getch();
         erase(); /// erase the screen (after getch())
         if ( ch != ERR) { /// user has a keypress
+             mvprintw(20, 0, "Got here"); 
             /// this is to delay until the next tick
             elapsedTime = getElapsedTime();
             if (elapsedTime < delay){
-                nsleep(delay-elapsedTime);}
-            
+                nsleep(delay-elapsedTime);
+            } 
         }
+        
+
+
         ticks += getElapsedTime() / delay;
         mvprintw(20, 0, "Ticks = %i", ticks);
+        
+        
+
+        /// Print enemy projectiles
+        // EnemyProjectile::timeStep(enemyProjectiles, ENEMY_PROJECTILE_LIMIT);
+        // for (int i = 0; i < ENEMY_PROJECTILE_LIMIT; ++i) {
+        //     if (enemyProjectiles[i]) {
+        //         eProjectileY = enemyProjectiles[i]->getY();
+        //         eProjectileX = enemyProjectiles[i]->getX();
+        //         mvprintw(eProjectileY, eProjectileX, "|");
+        //     }
+        // }
+
         /// some example code to show how to work with the keyboard
         switch(ch){
                 case KEY_RIGHT: 
@@ -142,27 +179,41 @@ int main (int argc, char const *argv[])
                 case KEY_LEFT: 
                 case 'a':
                     if (x > X_MIN) x--; break;
+                /// Limits the player to 5 projectiles at a time
                 case ' ':
-                    mvprintw(y-1, x, "|");
+                    if (pProjectileIndex < PLAYER_PROJECTILE_LIMIT) {
+                        pProjectiles[pProjectileIndex] = new PlayerProjectile(y-1, x, '|');
+                        pProjectileIndex++;
+                    /// Once a projectile has been destroyed the process starts over  
+                    } else if (!pProjectiles[0]) {
+                        pProjectileIndex = 0;
+                    }
                     break;
                 case 'q': 
                     quit = true;
                     break;
         }
 
-        // ticks += getElapsedTime();
-
-        /// Print enemies
-        EnemyShip::timeStep(&ticks, enemies, NUM_ENEMIES);
-        for (int i = 0; i < NUM_ENEMIES; ++i) {
-            // enemies[i]->timeStep(&ticks, enemies, NUM_ENEMIES);
-            enemy = enemies[i]->getShape();
-            enemyY = enemies[i]->getY();
-            enemyX = enemies[i]->getX();
-            mvaddch(enemyY, enemyX, enemy);
+        /// Print player projectiles
+        PlayerProjectile::timeStep(pProjectiles, PLAYER_PROJECTILE_LIMIT);
+        for (int i = 0; i < PLAYER_PROJECTILE_LIMIT; ++i) {
+            if (pProjectiles[i]) {
+                pProjectileY = pProjectiles[i]->getY();
+                pProjectileX = pProjectiles[i]->getX();
+                mvprintw(pProjectileY, pProjectileX, "|");
+            }
         }
-        
 
+        /// Print enemies and create enemy projectiles
+        EnemyShip::timeStep(&ticks, enemies, NUM_ENEMIES);//, enemyProjectiles, &enemyProjectileIndex);
+        for (int i = 0; i < NUM_ENEMIES; ++i) {
+            if (enemies[i]) {
+                enemy = enemies[i]->getShape();
+                enemyY = enemies[i]->getY();
+                enemyX = enemies[i]->getX();
+                mvaddch(enemyY, enemyX, enemy);
+            }
+        }    
 
         mvaddch(y,x,'^'); /// Print the player ship
         mvchgat(y,x, 1, '^', 2, NULL); /// color the player green
@@ -172,6 +223,15 @@ int main (int argc, char const *argv[])
     }   
     
     endwin();   /// cleanup the window
+
+    // cleanup game objects
+    for (int i = 0; i < NUM_ENEMIES; ++i) {
+        if (enemies[i]) {
+            delete enemies[i];
+            enemies[i] = 0;
+        }
+    }
+    delete player;
 
     return 0;
 }
