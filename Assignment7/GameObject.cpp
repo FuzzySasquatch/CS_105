@@ -1,11 +1,6 @@
 #include "GameObject.h"
 
-GameObject::enqueueFunc GameObject::myEnqueue = 0;
-GameObject::dequeueFunc GameObject::myDequeue = 0;
-
-GameObject::GameObject(int y, int x, int ch) : yPos(y), xPos(x), shape(ch) {
-		// cout << "GameObject" << endl;
-}
+GameObject::GameObject(int y, int x, int ch) : yPos(y), xPos(x), shape(ch) {}
 
 int GameObject::getX() const {
 	return this->xPos;

@@ -7,6 +7,7 @@ class PlayerProjectile : public GameObject {
 public:
 	PlayerProjectile(int,int,int);
 	static void timeStep(PlayerProjectile*[], int);	
+	static void isCollision(PlayerProjectile*[], int);
 };
 
 #endif

@@ -3,7 +3,11 @@
 
 #include "GameObject.h"
 #include "EnemyProjectile.h"
+#include "PlayerShip.h"
+#include "PlayerProjectile.h"
 
+class PlayerProjectile;
+class EnemyProjectile;
 
 class EnemyShip : public GameObject {
 private:
@@ -12,21 +16,10 @@ private:
 	static int moveDown;
 	static int uFireRate;
 	static int WFireRate;
-	static int enemiesLeft;
 public:
-	
 	EnemyShip(int,int,int);
 	static void timeStep(int*, EnemyShip*[], int, EnemyProjectile*[], int*); // logic when the time increments
-	
-	// virtual void timeStep() = 0; // logic when the time increments
-	// virtual char getShape() const = 0; // what is the shape of this object
-	// virtual void setX(const int x); int getX() const; // getter and setter for the x value
-	// virtual void setY(const int y); int getY() const; // getter and setter for the y value
-	// bool isCollision(const GameObject& obj) const; // Does the object collide with another
-
-	// GameObject() {}
-
-	
+	static bool isCollision(EnemyShip*[], PlayerShip*, int, PlayerProjectile*, int*);
 };
 
 #endif
